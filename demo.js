@@ -31,12 +31,22 @@ console.log(Object.prototype.toString.call(document))//[object HTMLDocument]
 
 var rword = /[^, ]+/g //切割字符串为一个个小块，以空格或豆号分开它们，结合replace实现字符串的forEach
 var class2type = {}
-"Boolean Number String Function Array Date RegExp Object Error".replace(rword, function (name) {
+"Null NaN Boolean Number String Function Array Date RegExp Object Error".replace(rword, function (name) {
     class2type["[object " + name + "]"] = name
 })
 console.log(class2type);
 console.log(class2type[Object.prototype.toString.call(22.1)]);
 console.log(class2type[Object.prototype.toString.call(r)]);
+console.log(class2type[Object.prototype.toString.call(null)]);
+
+
+console.log(class2type[Object.prototype.toString.call(document)]||document.nodeName||"#");//#document
+console.log(class2type[Object.prototype.toString.call(r)]||r.nodeName||"#");
+//如果以#打头说明是dom对象
+//console.log(window.window==window)    //window对象特有
+//nodeType=9  表示window
+//
+
 
 
 // HTML DOM的nodeType值介绍
