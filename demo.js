@@ -17,16 +17,43 @@ function A()
 var r=/^aaa/i;
 var a=new A();
 var b={};
+console.log(Object.prototype.toString.call(null))
+console.log(Object.prototype.toString.call(A))
+console.log(Object.prototype.toString.call(void 0))
+console.log(Object.prototype.toString.call(11))
+console.log(Object.prototype.toString.call(22.1))
+console.log(Object.prototype.toString.call(["11","222"]))
+console.log(Object.prototype.toString.call({}))
+console.log(Object.prototype.toString.call(r))
+console.log(Object.prototype.toString.call(new Date()))
+console.log(Object.prototype.toString.call(document))//[object HTMLDocument]
 
 
-// console.log(Object.prototype.toString.call(null))
-// console.log(Object.prototype.toString.call(A))
-// console.log(Object.prototype.toString.call(11))
-// console.log(Object.prototype.toString.call(22.1))
-// console.log(Object.prototype.toString.call(["11","222"]))
-// console.log(Object.prototype.toString.call({}))
-// console.log(Object.prototype.toString.call(r))
-console.log(Object.prototype.toString.call(document))
+var rword = /[^, ]+/g //切割字符串为一个个小块，以空格或豆号分开它们，结合replace实现字符串的forEach
+var class2type = {}
+"Boolean Number String Function Array Date RegExp Object Error".replace(rword, function (name) {
+    class2type["[object " + name + "]"] = name
+})
+console.log(class2type);
+console.log(class2type[Object.prototype.toString.call(22.1)]);
+console.log(class2type[Object.prototype.toString.call(r)]);
+
+
+// HTML DOM的nodeType值介绍
+// 1-ELEMENT
+// 2-ATTRIBUTE
+// 3-TEXT
+// 4-CDATA
+// 5-ENTITY REFERENCE
+// 6-ENTITY
+// 7-PI (processing instruction)
+// 8-COMMENT
+// 9-DOCUMENT
+// 10-DOCUMENT TYPE
+// 11-DOCUMENT FRAGMENT
+// 12-NOTATION 
+
+
 
 // console.log({}.toString())
 // console.log(Object.prototype.toString.call(window))  //各种浏览器有差别
