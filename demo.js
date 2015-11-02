@@ -8,15 +8,24 @@ http://www.cnblogs.com/ppforever/p/3921481.html
 
 
 
+var rword = /[^, ]+/g //切割字符串为一个个小块，以空格或豆号分开它们，结合replace实现字符串的forEach
+var class2type = {}
+"Null NaN Boolean Undefined Number String Function Array Date RegExp Object Error".replace(rword, function (name) {
+    class2type["[object " + name + "]"] = name
+})
+
+
+
+//测试 start------------------------
 function A()
 {
 	this.aa="";
 	this.bb="";
 }
-
 var r=/^aaa/i;
 var a=new A();
 var b={};
+console.log(String(null))
 console.log(Object.prototype.toString.call(null))
 console.log(Object.prototype.toString.call(A))
 console.log(Object.prototype.toString.call(void 0))
@@ -27,27 +36,32 @@ console.log(Object.prototype.toString.call({}))
 console.log(Object.prototype.toString.call(r))
 console.log(Object.prototype.toString.call(new Date()))
 console.log(Object.prototype.toString.call(document))//[object HTMLDocument]
-
-
-var rword = /[^, ]+/g //切割字符串为一个个小块，以空格或豆号分开它们，结合replace实现字符串的forEach
-var class2type = {}
-"Null NaN Boolean Number String Function Array Date RegExp Object Error".replace(rword, function (name) {
-    class2type["[object " + name + "]"] = name
-})
 console.log(class2type);
 console.log(class2type[Object.prototype.toString.call(22.1)]);
 console.log(class2type[Object.prototype.toString.call(r)]);
 console.log(class2type[Object.prototype.toString.call(null)]);
+console.log(class2type[Object.prototype.toString.call(A)]);
+console.log(class2type[Object.prototype.toString.call(["11","222"])]);
+console.log(class2type[Object.prototype.toString.call({})]);
+console.log(class2type[Object.prototype.toString.call(r)]);
+console.log(class2type[Object.prototype.toString.call(new Date())]);
+console.log(class2type[Object.prototype.toString.call(void 0)]);
+console.log(class2type[Object.prototype.toString.call(0/0)]);
+console.log(window.window==window) 
+console.log(document.nodeType==9) 
+//测试 end----------------------------
 
 
-console.log(class2type[Object.prototype.toString.call(document)]||document.nodeName||"#");//#document
-console.log(class2type[Object.prototype.toString.call(r)]||r.nodeName||"#");
+
+
+
+
+// console.log(class2type[Object.prototype.toString.call(document)]||document.nodeName||"#");//#document
+// console.log(class2type[Object.prototype.toString.call(r)]||r.nodeName||"#");
 //如果以#打头说明是dom对象
-//console.log(window.window==window)    //window对象特有
+//console.log(window.window==window)    //window对象特有,window对象不能通过toString后的值来判定，因为各个浏览器的toString值是不用的
 //nodeType=9  表示window
-//
-
-
+//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
 // HTML DOM的nodeType值介绍
 // 1-ELEMENT
@@ -82,13 +96,18 @@ console.log(class2type[Object.prototype.toString.call(r)]||r.nodeName||"#");
 // console.log(a.constructor.prototype);//A{}
 // console.log(b.constructor.prototype);//Object{}
 
-
-
 // console.log(b.constructor.prototype.hasOwnProperty);
-// console.log(b.constructor.prototype.hasOwnProperty("isPrototypeOf"));//Object{}    
+//console.log(b.constructor.prototype.hasOwnProperty("isPrototypeOf"));//Object{} 如果是纯js对象,就isPrototypeOf这个属性
+
+
+
+
+
+
+
+
+
 //console.log(dump_objUp(b));
-
-
 
 /* function dump_obj(myObject) {  
   var s = "";  
