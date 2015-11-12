@@ -7,7 +7,7 @@ http://www.cnblogs.com/ppforever/p/3921481.html
 */
 
 
-
+/*
 var rword = /[^, ]+/g //切割字符串为一个个小块，以空格或豆号分开它们，结合replace实现字符串的forEach
 var class2type = {}
 "Null NaN Boolean Undefined Number String Function Array Date RegExp Object Error".replace(rword, function (name) {
@@ -49,6 +49,43 @@ console.log(class2type[Object.prototype.toString.call(void 0)]);
 console.log(class2type[Object.prototype.toString.call(0/0)]);
 console.log(window.window==window) 
 console.log(document.nodeType==9) 
+*/
+
+
+
+////////////////////////////////////////////////多层级作用域start
+var buildEvalWithinScopeFunction =  function (expression, scopeLevels) {
+	var functionBody = "return (" + expression + ")";
+	for (var i = 0; i < scopeLevels; i++) {
+		functionBody = "with(sc[" + i + "]) { " + functionBody + " } ";
+	}
+	//with(sc[1]) { with(sc[0]) { return ({text: fullName}) }  } 
+	//console.log(functionBody);
+	return new Function("sc", functionBody);
+};
+
+function MyModelParent()
+{
+	this.password="";
+}
+function MyModel()
+{
+	this.name="";
+}
+var parent=new MyModelParent();
+parent.password="haha";
+var model=new MyModel();
+model.name="hello";
+var fn=buildEvalWithinScopeFunction("function (){alert(name+password)}",2);
+fn([model,parent])();
+////////////////////////////////////////////////多层级作用域end
+
+
+
+//with(sc[1]) { with(sc[0]) { return ({text: fullName}) }  } 
+//console.log(functionBody);
+
+
 //测试 end----------------------------
 
 
