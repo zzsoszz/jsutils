@@ -76,9 +76,11 @@ var parent=new MyModelParent();
 parent.password="haha";
 var model=new MyModel();
 model.name="hello";
-var fn=buildEvalWithinScopeFunction("function (){alert(name+password)}",2);
+var aaa="111";
+var fn=buildEvalWithinScopeFunction("function (){alert(name+password+aaa)}",2);
 fn([model,parent])();
 ////////////////////////////////////////////////多层级作用域end
+
 
 
 
