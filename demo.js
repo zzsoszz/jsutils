@@ -84,8 +84,19 @@ fn([model,parent])();
 
 
 
-//with(sc[1]) { with(sc[0]) { return ({text: fullName}) }  } 
-//console.log(functionBody);
+////////////////////////////////////////////////正则表达式start
+var str = "aaa aab aac\n  aaa aab aac";
+var patt1 =/a(a(a|c))+$/igm;//多行匹配影响$符号的意义，单行表示整个字符串尾部，多行表示\n,所以这里加上m可以匹配两个aac,不加只能匹配最后一个
+var match;
+while(match=patt1.exec(str))
+{
+	console.log(match.index);
+	console.log(match[0]);//第一代表一个完整的匹配项
+	console.log(match[1]);//(a(a|c))表示第一个分组，分组是由圆括号产生的，如果需要圆括号不产生分组捕获可以使用?:,分组的顺序是从左往右，由外向内的
+	console.log(match[2]);//(a|c)表示第二个分组
+}
+////////////////////////////////////////////////正则表达式end
+
 
 
 //测试 end----------------------------
