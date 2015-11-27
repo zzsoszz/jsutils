@@ -2,10 +2,34 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
+	<script type="text/javascript"  src="jquery-1.10.2.js" ></script>
 	<script type="text/javascript"  src="demo.js" ></script>
-</head>
-
-<body>
 	
+</head>
+<script>
+$(document).ready(
+	function()
+	{
+		document.getElementById("button1").onclick = function() {
+			alert(window.pageXOffset);
+			alert(document.body.clientTop);
+			alert(document.documentElement.clientTop);
+		};
+		
+		document.getElementById("button2").onclick = function() {
+			alert(window.pageYOffset);
+			alert(document.body.clientTop);
+			alert(document.documentElement.clientTop);
+		};
+	}
+);
+</script>
+
+
+<body style="border:solid 20px #336699;padding-top:15px;">
+	<div style="width:100;height:800px;">
+	<button id="button1">点击弹出window.pageXOffset</button>
+	<button id="button2">点击弹出window.pageYOffset</button>
+
 </body>
 </html>
