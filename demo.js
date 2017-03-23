@@ -225,3 +225,221 @@ jQuery.prototype.serializeObject=function(){
     });  
     return obj;  
 };
+
+
+
+JSON.flatten = function(data) {
+    var result = {};
+    function recurse (cur, prop) {
+        if (Object(cur) !== cur) {
+            result[prop] = cur;
+        } else if (Array.isArray(cur)) {
+            for(var i=0, l=cur.length; i<l; i++)
+                recurse(cur[i], prop + "[" + i + "]");//
+            if (l == 0)
+                result[prop] = [];
+        } else {
+            var isEmpty = true;
+            for (var p in cur) {
+                isEmpty = false;
+                recurse(cur[p], prop ? prop+"."+p : p);
+            }
+            if (isEmpty && prop)
+                result[prop] = {};
+        }
+    }
+    recurse(data, "");
+    return result;
+};
+if(!Array.prototype.delByIndex)
+{
+    Array.prototype.delByIndex = function(index) {
+        if (index > 0) {
+            this.slice(index, 1);
+        }
+    };
+    //Array.prototype.del = function(n)
+    //{
+    //    if (n<0) return this;
+    //    return this.slice(0,n).concat(this.slice(n+1,this.length));
+    //};
+}
+if(!Array.prototype.remove) {
+    Array.prototype.remove = function (val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+}
+if(!Array.prototype.moveUp)
+{
+    Array.prototype.moveUp = function(item)
+    {
+        var index =this.indexOf(item);
+        if(index!=0){
+            this.splice(index-1,2, item,this[index - 1]);
+        }
+    }
+}
+if(!Array.prototype.moveDown)
+{
+    Array.prototype.moveDown = function(item)
+    {
+        var index =this.indexOf(item);
+        if(index!=this.length-1){
+            this.splice(index, 2, this[index + 1], item);
+        }
+    };
+}
+
+
+
+HashMap = function(){
+    this._dict = {};
+}
+HashMap.prototype._shared = {id: 1};
+HashMap.prototype.put = function put(key, value){
+    if(typeof key == "object"){
+        if(!key.hasOwnProperty._id){
+            key.hasOwnProperty = function(key){
+                return Object.prototype.hasOwnProperty.call(this, key);
+            }
+            key.hasOwnProperty._id = this._shared.id++;
+        }
+        this._dict[key.hasOwnProperty._id] = value;
+    }else{
+        this._dict[key] = value;
+    }
+    return this; // for chaining
+}
+HashMap.prototype.get = function get(key){
+    if(typeof key == "object"){
+        return this._dict[key.hasOwnProperty._id];
+    }
+    return this._dict[key];
+}
+HashMap.prototype.remove = function get(key){
+    if(typeof key == "object"){
+        delete this._dict[key.hasOwnProperty._id];
+    }
+    delete this._dict[key];
+};
+
+
+//去重复
+Array.prototype.unique = function()
+{
+  var n = {},r=[];
+  for(var i = 0; i < this.length; i++) 
+  {
+    if (!n[this[i]])
+    {
+      n[this[i]] = true;
+      r.push(this[i]);
+    }
+  }
+  return r;
+};
+console.log(["1","2","1",3,1].unique().join(","));
+
+
+
+
+
+
+
+
+
+
+
+
+(function(jQuery) {
+  jQuery.eventEmitter = {
+    _JQInit: function() {
+      this._JQ = jQuery(this);
+    },
+    emit: function(evt, data) {
+      !this._JQ && this._JQInit();
+      this._JQ.trigger(evt, data);
+    },
+    once: function(evt, handler) {
+      !this._JQ && this._JQInit();
+      this._JQ.one(evt, handler);
+    },
+    on: function(evt, handler) {
+      !this._JQ && this._JQInit();
+      this._JQ.bind(evt, handler);
+    },
+    off: function(evt, handler) {
+      !this._JQ && this._JQInit();
+      this._JQ.unbind(evt, handler);
+    }
+  };
+}(jQuery));
+
+
+function SingleSelect(target){
+    var self=this;
+    self.qsigleselect=target;
+    self.data={
+        items:[],
+        selectedItem:null
+    };
+    self.selectedItem=null;
+    /*
+     *子元素更新后触发数据更新
+    */
+    self.loadDataFromView=function(){
+        self.data.items=self.qsigleselect.find(".item").get();
+    };
+    /*
+     *根据数据更新UI
+    */
+    self.renderDataToView=function(){
+        $(self.data.items).each(function(){
+            $(this).add($(this).find(".qstatus")).removeClass("active");
+        })
+        if(self.data.selectedItem)
+        {
+            $(self.data.selectedItem).add($(self.data.selectedItem).find(".qstatus")).addClass("active");
+        };
+    };
+    /*
+     *取值不做不更新UI
+     *数据更新之后更新UI
+    */
+    self.val=function(val){
+        if(val){
+            var willSelectedItem=$(self.data.items).filter(function(){
+                if($(this).data("qvalue")==val){
+                    return true;
+                }
+            });
+            self.data.selectedItem=willSelectedItem;
+            self.renderDataToView();
+            self.emit('change',val);
+        }else
+        {
+            return $(self.data.selectedItem).data("qvalue");
+        }
+    };
+    /*
+     *UI事件触发数据更新,数据更新后更新UI
+    */
+    self.init=function(){
+        self.qsigleselect.on("click",".item",function(e){
+            if(e.currentTarget!=self.selectedItem){
+                self.data.selectedItem=e.currentTarget;
+                self.emit('change',self.val());
+                self.renderDataToView();
+            };
+        });
+        self.loadDataFromView();
+    };
+    self.init();
+};
+
+
+jQuery.extend(SingleSelect.prototype, jQuery.eventEmitter);
+
