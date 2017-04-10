@@ -492,6 +492,12 @@ window.mobilecheck = function() {
 
 
 // usage:
+//https://www.paulirish.com/2009/throttled-smartresize-jquery-event-handler/
 $(window).smartresize(function(){
   // code that takes it easy...
 });
+
+
+
+
+
