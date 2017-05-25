@@ -486,7 +486,7 @@ window.mobilecheck = function() {
       };
   }
   // smartresize 
-  jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+  jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn) ) : this.trigger(sr); };
 
 })(jQuery,'smartresize');
 
@@ -684,3 +684,22 @@ return EvEmitter;
 
 
 
+
+
+/* 
+ *https://devhub.io/zh/repos/house9-jquery-iframe-auto-height
+ *https://github.com/house9/jquery-iframe-auto-height
+ */
+-------------------------iframe自适应
+function iframeautoheight(ele)
+{
+	ele.on("load",function(){
+		ele.height(ele.contents().find("html").height());
+	});
+}
+
+jQuery(document).ready(function() {
+	$(".autoheightiframe").each(function(){
+		iframeautoheight($(this));	
+	});
+});
