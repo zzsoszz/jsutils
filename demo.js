@@ -703,3 +703,87 @@ jQuery(document).ready(function() {
 		iframeautoheight($(this));	
 	});
 });
+
+
+
+
+
+
+
+
+var ImageExplorer=(function ()
+{
+	var unique;
+    function getInstance(){
+        if( unique === undefined ){
+            unique = new Construct();
+        }
+        return unique;
+    }
+	function Construct(){
+	    var self=this;
+		self.previewbox;
+		self.openImage=function(imgPath)
+		{
+		   var imgpreviewbox=self.previewbox.empty().show();
+		   var img=$("<img>").css({
+		    "position":"absolute",
+		   	"transform":"translate(-50%,-50%)",
+		   	"top":"50%",
+		   	"left":"50%",
+		   	"z-index":"5",
+		   	"max-height":"100%",
+		   	"max-width":"100%"
+		   	});
+		   img.attr("src",imgPath);
+		   self.previewbox.append(img);
+		};
+		self.init=function()
+		{
+			self.previewbox=$('<div id="previewbox" style="position:fixed;z-index:5;top: 0;bottom:0;right:0;left:0;text-align:center;display:none;"></div>');
+			self.previewbox.click(function(){
+			 	self.previewbox.hide();
+			});
+			$("body").append(self.previewbox);
+		}
+		self.init();
+	};
+	return {getInstance : getInstance}
+})();
+function isIOS()
+{
+	var u = navigator.userAgent; 
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    return isiOS;
+}
+function isAndroid()
+{
+	var u = navigator.userAgent; 
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+    return isiOS;
+}
+function bigimg()
+{
+	//$("* img:not(a>img)");
+	var bigimgAll=$("*:not(a) > img.bigimg").add($("*:not(a) > img[src^='http://bossappnew']"));
+	var imgs=bigimgAll.get();
+	var imgsUrl=imgs.map(one=>one.src);
+	bigimgAll.on("click",function(e){
+		var index=imgs.indexOf(e.target);
+		if(isIOS())
+		{
+			window.webkit.messageHandlers.seeBigPic.postMessage({imgArray:imgsUrl,curindex:index});
+		}
+		else if(window.bossappjs && window.bossappjs.seeBigPic)
+		{
+			window.bossappjs.seeBigPic(imgsUrl,index);
+		}else{
+			var imgE=ImageExplorer.getInstance();
+			imgE.openImage($(e.target).attr("src"));
+		}
+	});
+}
+$(document).ready(function(){
+	bigimg();
+});
+
