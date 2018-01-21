@@ -950,3 +950,166 @@ invert = function (pixels) {
     return pixels;
 };
 
+
+
+
+
+
+
+
+
+
+/*
+区域和点的关系
+*/
+// <div id="one">
+//   <div style="background:#778899">
+//     one
+//   </div>
+// </div>
+
+// <div id="two">
+//   <div style="background:#778899">
+//       two
+//   </div>
+// </div>
+
+// div{
+//   height:100px;
+//   width:300px;
+// }
+// #one{
+//   background:#336677;
+//   padding:10px;
+// }
+// #two{
+//   background:#336699;
+//   position:absolute;
+//   left:50px;
+//   top:50px;
+//   padding:10px;
+// }
+function isInReactangle(rectabgle,point){
+    console.log("point",point);  
+    var is=(rectabgle.left<point.x)&&(point.x<rectabgle.right)&&(rectabgle.top<point.y)&&(point.y<rectabgle.bottom);
+    return is;
+}
+
+function isTop(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.left+padding,
+      right:rectabgle.right-padding,
+      top:rectabgle.top,
+      bottom:rectabgle.top+padding
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+function isLeft(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.left,
+      right:rectabgle.left+padding,
+      top:rectabgle.top+padding,
+      bottom:rectabgle.bottom-padding
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+function isBottom(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.left+padding,
+      right:rectabgle.right-padding,
+      top:rectabgle.bottom-padding,
+      bottom:rectabgle.bottom
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+function isRight(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.right-padding,
+      right:rectabgle.right,
+      top:rectabgle.top+padding,
+      bottom:rectabgle.bottom-padding
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+
+
+
+function isTopLeft(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.left,
+      right:rectabgle.left+padding,
+      top:rectabgle.top,
+      bottom:rectabgle.top+padding
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+
+function isBottomLeft(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.left,
+      right:rectabgle.left+padding,
+      top:rectabgle.bottom-padding,
+      bottom:rectabgle.bottom
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+function isTopRight(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.right-padding,
+      right:rectabgle.right,
+      top:rectabgle.top,
+      bottom:rectabgle.top+padding
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+
+function isBottomRight(rectabgle,point){
+    var padding=10;
+    var rect={
+      left:rectabgle.right-padding,
+      right:rectabgle.right,
+      top:rectabgle.bottom-padding,
+      bottom:rectabgle.bottom
+    };
+    var is=(rect.left<point.x)&&(point.x<rect.right)&&(rect.top<point.y)&&(point.y<rect.bottom);
+    return is;
+}
+
+
+window.onload=function(){
+  var one=document.getElementById("two");
+  var body=document.body;
+  var rect=one.getBoundingClientRect();
+  console.log("rect",rect);
+  window.addEventListener("mousemove",function(e){
+    var is=isBottomRight(rect,{x:e.pageX,y:e.pageY});
+    if(is)
+    {
+      one.style="background:red";
+    }else{
+      one.style="";
+    }
+  });
+ 
+}
